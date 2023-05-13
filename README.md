@@ -42,7 +42,7 @@ Before running the script, you need to have the following:
 
    - **LOCAL_PORT**: This is the local port on your machine (or the bastion VM, in this case) that will be used to forward traffic to the remote port on the GKE control plane through the secure SSH tunnel. You can choose any available port that is not currently in use by other services on your bastion VM.
 
-   - **REMOTE_PORT**: This is the remote port on the GKE control plane that you want to access. Since you mentioned the GKE control plane communicates on port 443, you would set REMOTE_PORT to 443.
+   - **REMOTE_PORT**: This is the remote port on the GKE control plane that you want to access. The [GKE control plane communicates on port 443](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#add_firewall_rules), so the REMOTE_PORT is set to 443 but can be changed in the script prior to execution.
 
    - **USERNAME**: This is the username that you will use to SSH into the bastion host. This could be your Google Cloud user, a service account, or another type of user that you have set up.
 

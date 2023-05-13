@@ -26,7 +26,7 @@ if [ -z ${CLUSTER_NAME+x} ]; then read -p "Enter your GKE cluster name: " CLUSTE
 if [ -z ${ZONE+x} ]; then read -p "Enter your GKE zone: " ZONE; fi
 if [ -z ${PROJECT_ID+x} ]; then read -p "Enter your GCP project ID: " PROJECT_ID; fi
 if [ -z ${LOCAL_PORT+x} ]; then read -p "Enter the local port for the secure tunnel: " LOCAL_PORT; fi
-if [ -z ${REMOTE_PORT+x} ]; then read -p "Enter the remote port for the secure tunnel: " REMOTE_PORT; fi
+if [ -z ${REMOTE_PORT+x} ]; then REMOTE_PORT="443"; fi
 if [ -z ${USERNAME+x} ]; then read -p "Enter the username for the bastion host: " USERNAME; fi
 if [ -z ${BASTION_HOST+x} ]; then read -p "Enter the external IP of the bastion host: " BASTION_HOST; fi
 
