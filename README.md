@@ -10,8 +10,7 @@ Before running the script, you need to have the following:
 
 1. A Google Cloud Platform (GCP) account.
 2. A GKE cluster set up in your GCP account.
-3. A bastion host with an external IP address.
-4. `gcloud` and `kubectl` installed on the bastion host.
+3. A bastion host with an external IP address or internal access via VPN, Shared VPC, or Interconnect.
 
 ## Usage
 
