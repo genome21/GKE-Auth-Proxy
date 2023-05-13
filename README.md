@@ -34,13 +34,19 @@ Before running the script, you need to have the following:
 
     The script will prompt you to enter the following information:
 
-    - Your GKE cluster name
-    - Your GKE zone
-    - Your GCP project ID
-    - The local port for the secure tunnel
-    - The remote port for the secure tunnel
-    - The username for the bastion host
-    - The external IP of the bastion host
+    - **CLUSTER_NAME**: This is the name of your GKE cluster. It's the identifier that GKE uses to manage and organize your resources.
+
+    - **ZONE**: This is the GCP zone in which your GKE cluster is located. A zone is a deployment area for GCP resources. You can think of it as a single data center or a part of a data center in the real world.
+
+    - **PROJECT_ID**: This is the unique identifier of your GCP project. The project organizes all your Google Cloud resources. A project is required to use the Google Cloud Console, the gcloud command-line tool, and the Google Cloud APIs.
+
+   - **LOCAL_PORT**: This is the local port on your machine (or the bastion VM, in this case) that will be used to forward traffic to the remote port on the GKE control plane through the secure SSH tunnel. You can choose any available port that is not currently in use by other services on your bastion VM.
+
+   - **REMOTE_PORT**: This is the remote port on the GKE control plane that you want to access. Since you mentioned the GKE control plane communicates on port 443, you would set REMOTE_PORT to 443.
+
+   - **USERNAME**: This is the username that you will use to SSH into the bastion host. This could be your Google Cloud user, a service account, or another type of user that you have set up.
+
+   - **BASTION_HOST**: This is the external IP of the bastion host, which is the VM you are using as an intermediary for your SSH connections. The bastion host should be reachable from your machine and be able to communicate with the GKE control plane.
 
     If you want to run the script as a startup script on the bastion host, add it to your `/etc/rc.local` or similar file depending on your system's initialization system.
 
