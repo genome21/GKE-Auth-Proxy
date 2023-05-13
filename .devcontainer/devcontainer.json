@@ -1,0 +1,24 @@
+{
+    "customizations": {
+        "codespaces": {
+            "openFiles": []
+        },
+        "vscode": {
+            "extensions": [
+                "ms-toolsai.jupyter@2023.5.1001301100",
+                "ms-python.python@2023.9.11251005",
+                "sourcery.sourcery@1.2.0",
+                "GitHub.copilot@1.86.82",
+                "amazonwebservices.aws-toolkit-vscode@1.72.0",
+                "ms-python.pylint@2023.5.10901018"
+            ]
+        }
+    },
+    "hostRequirements": {
+        "cpus": 4
+    },
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "postCreateCommand": "",
+    "updateContentCommand": "python3 -m pip install -r requirements.txt",
+    "waitFor": "onCreateCommand"
+}
