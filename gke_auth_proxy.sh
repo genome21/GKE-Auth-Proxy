@@ -22,7 +22,7 @@ else
 fi
 
 # Prompt for variable values if they're not already set
-if [ -z ${CLUSTER_NAME+x} ]; then read -p "Enter your GKE cluster name: " CLUSTER_NAME; fi
+if [ -z ${GKE_CLUSTER_NAME+x} ]; then read -p "Enter your GKE cluster name: " GKE_CLUSTER_NAME; fi
 if [ -z ${ZONE+x} ]; then read -p "Enter your GKE zone: " ZONE; fi
 if [ -z ${PROJECT_ID+x} ]; then read -p "Enter your GCP project ID: " PROJECT_ID; fi
 if [ -z ${LOCAL_PORT+x} ]; then read -p "Enter the local port for the secure tunnel: " LOCAL_PORT; fi
@@ -34,7 +34,7 @@ if [ -z ${BASTION_HOST+x} ]; then read -p "Enter the external IP of the bastion 
 cat > /etc/profile.d/gke_auth_proxy_vars.sh <<EOF
 #!/bin/bash
 
-export CLUSTER_NAME="$CLUSTER_NAME"
+export GKE_CLUSTER_NAME="$GKE_CLUSTER_NAME"
 export ZONE="$ZONE"
 export PROJECT_ID="$PROJECT_ID"
 export LOCAL_PORT="$LOCAL_PORT"
@@ -52,7 +52,7 @@ gcloud auth login
 gcloud config set project $PROJECT_ID
 
 # Get the credentials for the GKE cluster
-gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE
+gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone $ZONE
 
 # Start the proxy
 kubectl proxy --port=8080 &

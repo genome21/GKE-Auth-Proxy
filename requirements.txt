@@ -1,0 +1,5 @@
+streamlit
+google-cloud-container
+google-cloud-compute
+google-api-python-client
+google-auth

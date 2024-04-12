@@ -1,61 +1,78 @@
-# GKE Auth Proxy
+# GKE Auth Proxy Setup Guide
 
-The `gke_auth_proxy.sh` script creates a secure tunnel from your local machine to a remote Google Kubernetes Engine (GKE) cluster through a bastion host. It allows you to run `kubectl` commands on the GKE cluster as if you were running them locally. 
+## Introduction
 
-This script is particularly useful when you want to access a private GKE cluster that isn't directly accessible from the internet. By connecting through a bastion host, you can securely manage your GKE cluster without exposing it to potential threats.
+Securing access to Google Kubernetes Engine (GKE) clusters is a critical aspect of cloud infrastructure management. Organizations often choose private GKE clusters for their security advantages, but this limits their direct accessibility from the internet, posing a challenge for remote management.
+
+The need for a secure communication pathway is clear. While using a bastion host as an intermediary is common, the complexity of setting up and maintaining a secure tunnel to the GKE cluster can be overwhelming.
+
+So, how can we simplify secure access to private GKE clusters? The aim is to enable seamless `kubectl` command execution as if the clusters were directly accessible, without compromising on security.
+
+Enter the GKE Auth Proxy. This tool streamlines the creation of a secure tunnel from your local machine to a remote GKE cluster through a bastion host. It makes the setup process straightforward and ensures secure cluster management.
 
 ## Prerequisites
 
-Before running the script, you need to have the following:
+Before using the GKE Auth Proxy, ensure that you have the following:
 
-1. A Google Cloud Platform (GCP) account.
-2. A GKE cluster set up in your GCP account.
-3. A bastion host with an external IP address or internal access via VPN, Shared VPC, or Interconnect.
+1. **Google Cloud Platform (GCP) account:** A valid account with access to GKE and Compute Engine services.
+2. **GKE cluster:** A GKE cluster set up in your GCP account. This can be a private cluster that is not directly accessible from the internet.
+3. **Bastion host:** A Compute Engine instance with either an external IP address or internal access via VPN, Shared VPC, or Interconnect. This instance will act as the intermediary for secure communication.
 
-## Usage
+## Setup Instructions
 
-1. Download the script to your bastion host:
+There are two methods to set up the GKE Auth Proxy: using a bash script or a Python script. Choose the method that best fits your workflow.
+
+### Bash Script Method
+
+1. **Download the script:** Obtain the bash script from the repository and make it executable:
 
     ```bash
     wget https://raw.githubusercontent.com/genome21/GKE-Auth-Proxy/main/gke_auth_proxy.sh
-    ```
-
-2. Make the script executable:
-
-    ```bash
     chmod +x gke_auth_proxy.sh
     ```
 
-3. Run the script:
+2. **Run the script:** Execute the script and provide the required information when prompted:
 
     ```bash
     ./gke_auth_proxy.sh
     ```
 
-    The script will prompt you to enter the following information:
+    - **GKE Cluster Name (CLUSTER_NAME):** The name of your GKE cluster.
+    - **GCP Zone (ZONE):** The zone where your GKE cluster is located.
+    - **GCP Project ID (PROJECT_ID):** The ID of your GCP project.
+    - **Local Port (LOCAL_PORT):** A local port on your machine for the secure tunnel (e.g., 8080).
+    - **Remote Port (REMOTE_PORT):** The remote port on the GKE control plane (usually 443).
+    - **Username (USERNAME):** The username for SSH access to the bastion host.
+    - **Bastion Host IP (BASTION_HOST):** The external IP address of the bastion host.
 
-    - **CLUSTER_NAME**: This is the name of your GKE cluster. It's the identifier that GKE uses to manage and organize your resources.
+### Python Script Method (Streamlit App)
 
-    - **ZONE**: This is the GCP zone in which your GKE cluster is located. A zone is a deployment area for GCP resources. You can think of it as a single data center or a part of a data center in the real world.
+1. **Clone the repository:** Get the Python script and related files:
 
-    - **PROJECT_ID**: This is the unique identifier of your GCP project. The project organizes all your Google Cloud resources. A project is required to use the Google Cloud Console, the gcloud command-line tool, and the Google Cloud APIs.
+    ```bash
+    git clone https://github.com/genome21/GKE-Auth-Proxy.git
+    cd GKE-Auth-Proxy
+    ```
 
-   - **LOCAL_PORT**: This is the local port on your machine (or the bastion VM, in this case) that will be used to forward traffic to the remote port on the GKE control plane through the secure SSH tunnel. You can choose any available port that is not currently in use by other services on your bastion VM.
+2. **Install dependencies:** Use the provided `requirements.txt` to install necessary packages:
 
-   - **REMOTE_PORT**: This is the remote port on the GKE control plane that you want to access. The [GKE control plane communicates on port 443](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#add_firewall_rules), so the REMOTE_PORT is set to 443 but can be changed in the script prior to execution.
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-   - **USERNAME**: This is the username that you will use to SSH into the bastion host. This could be your Google Cloud user, a service account, or another type of user that you have set up.
+3. **Run the Streamlit app:** Start the app and follow the interactive prompts:
 
-   - **BASTION_HOST**: This is the external IP of the bastion host, which is the VM you are using as an intermediary for your SSH connections. The bastion host should be reachable from your machine and be able to communicate with the GKE control plane.
+    ```bash
+    streamlit run deploy.py
+    ```
 
-    If you want to run the script as a startup script on the bastion host, add it to your `/etc/rc.local` or similar file depending on your system's initialization system.
+    The app will guide you through selecting your GKE cluster, VPC, subnet, and region. It will then generate the commands you need to run on your bastion host to set up the GKE Auth Proxy.
 
-## Note
+## Security Considerations
 
-The script will check if `gcloud` and `kubectl` are installed on your bastion host. If not, it will install them for you. 
+- **Bastion Host Security:** Ensure that your bastion host is secured with appropriate firewall rules and access controls. Limit access to the bastion host to trusted individuals and follow best practices for system security.
+- **Credential Management:** Handle GCP credentials and service account keys with care. Use IAM roles and permissions to grant the least privilege necessary for the tasks.
 
-If the script is run for the first time or the required variables are not set, it will prompt you to enter them. These variables will then be set globally for all users and will persist through system reboots.
+## Conclusion
 
-## Caution
-
-Keep the security of your bastion host in mind. Anyone with access to the bastion host will have access to the GKE cluster. Therefore, only give access to trusted individuals and always follow best practices for securing your systems.
+The GKE Auth Proxy simplifies the process of securely accessing a private GKE cluster through a bastion host. By following the setup instructions provided in this guide, you can establish a secure tunnel to manage your GKE cluster remotely without exposing it to potential threats.
